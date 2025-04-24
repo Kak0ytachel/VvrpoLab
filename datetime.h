@@ -1,0 +1,41 @@
+#include <string>
+
+class Datetime{
+public:
+    // std::string name;
+    int hour;
+    int minute;
+    int day;
+    int month;
+    int year;
+
+    // Datetime(std::string name);
+
+    Datetime(int a, int b);
+
+    Datetime(int d, int mo, int y, int h, int mi);
+
+    Datetime(int ts);
+
+    Datetime();
+
+    // void main();
+
+    int timestamp();
+
+    bool is_leap_year();
+
+    static bool is_leap_year(int year) {
+        if (year % 400 == 0) {
+            return true;
+        }
+        if (year % 100 == 0) {
+            return false;
+        }
+        if (year % 4 == 0) {
+            return true;
+        }
+        return false;
+    }
+};
+

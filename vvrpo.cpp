@@ -3,15 +3,15 @@
 #include <memory>
 #include <fstream>
 #include <map>
+#include "datetime.cpp"
+#include "jsonserializer.cpp"
+#include "jsondeserializer.cpp"
 using namespace std;
 
 class User;
 class BusRoute;
 class ConsoleApp;
 class Ticket;
-class Datetime;
-class JsonSerializer;
-class JsonDeserializer;
 
 int getInt(int min_val, int max_val, string message) {
     cout << message << endl;
@@ -29,99 +29,6 @@ string getString(string message) {
     return result;
     // todo: modify
 }
-
-class Datetime {
-public:
-    int hour;
-    int minute;
-    int day;
-    int month;
-    int year;
-
-    Datetime(int d, int mo, int y, int h, int mi) {
-        this->day = d;
-        this->month = mo;
-        this->year = y;
-        this->minute = mi;
-        this->hour = h;
-    }
-
-    Datetime (int ts) {
-        this->year = 1970;
-        this->month = 1;
-        this->day = 1;
-        this->hour = 0;
-        this->minute = 0;
-
-        while (true) {
-            int days = (this->is_leap_year())? 366: 365;
-            if (ts > days * 24 * 60 * 60) {
-                this->year += 1;
-                ts -= days * 24 * 60 * 60;
-            } else {
-                break;
-            }
-        }
-        while (true) {
-            int days = (this->month == 1 || this->month == 3 || this->month == 5 || this->month == 7 
-            || this->month == 8 || this->month == 10 || this->month == 12)? 31: 30;
-            if (ts > days * 24 * 60 * 60) {
-                this->month += 1;
-                ts -= days * 25 * 60 * 60;
-            } else {
-                break;
-            }
-        }
-        this->day += ts / (24 * 60 * 60);
-        ts = ts % (24 * 60 * 60);
-        this->hour = ts / 3600;
-        ts = ts % 3600;
-        this->minute = ts / 60;
-    }
-
-    Datetime(): Datetime(0) {}
-
-    int timestamp() {
-        int result = 0;
-        if (this->year >= 1970) {
-            for (int y = 1970; y < this->year; y++) {
-                result += (this->is_leap_year(y)? 366: 365) * 24 * 60 * 60;
-            }
-        } else {
-            for (int y = this->year; y < 1970; y++) {
-                result -= (this->is_leap_year(y)? 366: 365) * 24 * 60 * 60;
-            }
-        }
-        for (int m = 1; m < this->month; m++) {
-            if (m == 1 || m == 3 || m == 5 || m == 7 || m || m == 8 || m == 10 || m == 12) {
-                result += 31 * 24 * 60 * 60;
-            } else {
-                result += 30 * 24 * 60 * 60;
-            }
-        }
-        result += (this->day - 1) * 24 * 60 * 60;
-        result += this->hour * 60 * 60;
-        result += this->minute * 60;
-        return result;
-    }
-
-    bool is_leap_year() {
-        return this->is_leap_year(this->year);
-    } 
-
-    static bool is_leap_year(int year) {
-        if (year % 400 == 0) {
-            return true;
-        }
-        if (year % 100 == 0) {
-            return false;
-        }
-        if (year % 4 == 0) {
-            return true;
-        }
-        return false;
-    }
-};
 
 Datetime getDate(string message) {
     cout << message << endl;
@@ -153,13 +60,13 @@ public:
         // TODO replace
     }
 
-    BusRoute* get_bus(int route_id) {
-        // for (int i = 0; i < this->buses.size(); i++) {
-        //     if (this->buses[i]->routeId == route_id) {
-        //         return this->buses[i];
-        //     }
-        // }
-    }
+    // BusRoute* get_bus(int route_id) {
+    //     // for (int i = 0; i < this->buses.size(); i++) {
+    //     //     if (this->buses[i]->routeId == route_id) {
+    //     //         return this->buses[i];
+    //     //     }
+    //     // }
+    // }
     
     void load_file() {
         
@@ -208,11 +115,11 @@ public:
         this->buses.push_back(bus);
     }
 
-    string serialize() {
-        // JsonSerializer serializer = JsonSerializer();
-        // serializer.serialize_vector<User>("users", users);
-        // serializer.serialize_vector
-    }
+    // string serialize() {
+    //     // JsonSerializer serializer = JsonSerializer();
+    //     // serializer.serialize_vector<User>("users", users);
+    //     // serializer.serialize_vector
+    // }
 };
 ConsoleApp app = ConsoleApp("test.data");
 
@@ -300,192 +207,6 @@ public:
     } 
 };
 
-class JsonSerializer {
-public:
-    string result = "{}";
-    int insert_index = 1;
-
-    void add_comma() {
-        if (this->insert_index != 1) {
-            this->result.insert(this->insert_index, ", ");
-            this->insert_index += 2;
-        }
-    }
-
-    void serialize_string(string key,  string value) {
-        this->add_comma();
-        string s = "\"" + key + "\": \"" + value + "\"";
-        this->result.insert(this->insert_index, s);
-        this->insert_index += s.size();
-    } 
-
-    void serialize_int(string key, int value) {
-        this->serialize_string(key, to_string(value));
-    }
-
-    void serialize_dt(string key, Datetime value) {
-        this->serialize_int(key, value.timestamp());
-    }
-
-    string get_result() {
-        return this->result;
-    }
-
-    template <typename T>
-    void serialize_vector(string key, vector<T*> elements) {
-        string s = "[";
-        for (int i = 0; i < elements.size(); i++) {
-            s += elements[i]->serialize();
-            if (i == elements.size() - 1) {
-                s += ", ";
-            }
-        }
-        s += "]";
-        this->serialize_string(key, s);
-    }
-};
-
-class JsonDeserializer {
-public:
-    string input;
-    map<string, string> dict;
-    
-
-    JsonDeserializer(string input): input(input) {
-        int start = input.find_first_of('{');
-        int i = start;
-        while (true) {
-            cout << "cycle 1, i = " << i << endl;
-            int a = input.find('"', i);
-            int b = input.find('"', a + 1);
-            string key = input.substr(a+1, b-a-1);
-            string value;
-            cout << "key = " << key << endl;
-            // "bcde"
-            // 012345
-            // ^    ^
-            // 0+1, 5-0-1
-            int c = input.find(':', b + 1);
-            i = c;
-            int d;
-            int e;
-            while (true) {
-                cout << "cycle 2, s[i] = " << input[i] << endl;
-                if (input[i] == '"') {
-                    d = i;
-                    e = input.find('"', i + 1);
-                    i = e + 1;
-                    value = input.substr(d + 1, e - d - 1);
-                    break;
-                } else if (input[i] == '[' || input[i] == '{') {
-                    d = i;
-                    int square_braces = 0;
-                    int curly_bracets = 0;
-                    int quotes = 0;
-                    while (true) {
-                        cout << "cycle 3, input[i] = " << input[i] << endl;
-                        if (input[i] == '[') {
-                            square_braces++;
-                        } else if (input[i] == ']') {
-                            square_braces--;
-                        } else if (input[i] == '{') {
-                            curly_bracets++;
-                        } else if (input[i] == '}') {
-                            curly_bracets--;
-                        } else if (input[i] == '"') {
-                            quotes = 1 - quotes;
-                        }
-                        if (square_braces == 0 && curly_bracets == 0 && quotes == 0) {
-                            break;
-                        }
-                        i++;
-                    }
-                    e = i;
-                    value = input.substr(d, e - d);
-                    break;
-                } else {
-                    i++;
-                }
-            }
-            cout << "value = " << value << endl;
-            this->dict[key] = value;
-            while (input[i] == ' ') {
-                i++;
-            }
-            if (input[i] == '}') {
-                break;
-            }
-            if (input[i] == ',') {
-                i++;
-                continue;
-            }
-        }
-    }
-
-    string deserialize_string(string key) {
-        return this->dict[key];
-    }
-
-    int deserialize_int(string key) {
-        int a = stoi(deserialize_string(key));
-        return a;
-    }
-
-    Datetime deserialize_dt(string key) {
-        Datetime dt = Datetime(deserialize_int(key));
-        return dt;
-    }
-
-    template<typename T>
-    vector<T> deserialize_vector(string key) {
-        string s = this->dict[key];
-        vector<T> values;
-        int start = s.find_first_of('[');
-        int finish = s.find_last_of(']');
-        int i = start;
-        while (true) {
-            if (s[i] == ' ') {
-                i++;
-                continue;
-            }
-            int a = 0;
-            int square_braces = 0;
-            int curly_bracets = 0;
-            int quotes = 0;
-            while (true) {
-                if (input[i] == '[') {
-                    square_braces++;
-                } else if (input[i] == ']') {
-                    square_braces--;
-                } else if (input[i] == '{') {
-                    curly_bracets++;
-                } else if (input[i] == '}') {
-                    curly_bracets--;
-                } else if (input[i] == '"') {
-                    quotes = 1 - quotes;
-                }
-                if (square_braces == 0 && curly_bracets == 0 && quotes == 0) {
-                    break;
-                }
-                i++;
-            }
-            int b = i;
-            string element = s.substr(a, b - a + 1);
-            T t = T(element);
-            i++;
-            while (s[i] == ' ') {
-                i++;
-            }
-            if (s[i] == ',') {
-                continue;
-            }
-            if (s[i] == ']') {
-                break;
-            }
-        }
-        return values;
-    }
-};
 
 class Administrator: public User {
 public: 
@@ -516,13 +237,13 @@ public:
     Ticket(int routeId, int quantity): routeId(routeId), quantity(quantity) {}
 
     void cancel() {
-        this->get_bus();
+        // this->get_bus();
         this->is_canceled = 1;
     }
 
-    BusRoute* get_bus() {
-        return app.get_bus(this->routeId);
-    }
+    // BusRoute* get_bus() {
+    //     return app.get_bus(this->routeId);
+    // }
 
     string serialize() {
         JsonSerializer serializer = JsonSerializer();
