@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
-#include "datetime.cpp"
+#include "datetime.h"
+#pragma once
 
 using namespace std;
 

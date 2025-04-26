@@ -1,5 +1,4 @@
 #include "datetime.h"
-#pragma once
 
 Datetime::Datetime(int d, int mo, int y, int h, int mi): day(d), month(mo), year(y), minute(mi), hour(h) {}
 

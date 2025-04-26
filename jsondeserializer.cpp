@@ -1,8 +1,6 @@
 #include <iostream>
 #include "jsondeserializer.h"
 
-using namespace std;
-
 JsonDeserializer::JsonDeserializer(string input): input(input) {
     int start = input.find_first_of('{');
     int i = start;
