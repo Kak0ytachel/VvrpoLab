@@ -1,23 +1,23 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "datetime.cpp"
+#include "datetime.h"
+#pragma once
 
-using namespace std;
 
 class JsonDeserializer {
 public:
-    string input;
-    map<string, string> dict;
+    std::string input;
+    std::map<std::string, std::string> dict;
 
-    JsonDeserializer(string input);
+    JsonDeserializer(std::string input);
 
-    string deserialize_string(string key);
+    std::string deserialize_string(std::string key);
 
-    int deserialize_int(string key);
+    int deserialize_int(std::string key);
 
-    Datetime deserialize_dt(string key);
+    Datetime deserialize_dt(std::string key);
 
     template<typename T>
-    vector<T> deserialize_vector(string key);
+    std::vector<T> deserialize_vector(std::string key);
 };

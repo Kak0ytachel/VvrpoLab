@@ -1,6 +1,6 @@
 #include <iostream>
 #include "jsondeserializer.h"
-
+#pragma once
 using namespace std;
 
 JsonDeserializer::JsonDeserializer(string input): input(input) {

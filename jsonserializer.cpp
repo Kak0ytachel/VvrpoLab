@@ -1,4 +1,5 @@
 #include "jsonserializer.h"
+#pragma once
 
 void JsonSerializer::serialize_string(string key,  string value) {
         this->add_comma();
