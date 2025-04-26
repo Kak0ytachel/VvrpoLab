@@ -8,4 +8,6 @@ namespace utils{
     string getString(string message);
 
     Datetime getDate(string message);
+
+    string encrypt(string pass);
 }

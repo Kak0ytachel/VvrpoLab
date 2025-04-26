@@ -1,5 +1,5 @@
 #include "consoleapp.h"
-
+#pragma once
 
 ConsoleApp::ConsoleApp(string filename): filename(filename) {
     bool flag = this->get_data();

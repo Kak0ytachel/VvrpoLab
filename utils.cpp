@@ -28,3 +28,7 @@ Datetime utils::getDate(string message) {
     Datetime dt = Datetime(d, m, y, h, mm);
     return dt;
 }
+
+string utils::encrypt(string pass) {
+    return pass;
+}
