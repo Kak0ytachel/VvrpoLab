@@ -7,39 +7,13 @@
 #include "jsonserializer.cpp"
 #include "jsondeserializer.cpp"
 #include "ticket.cpp"
+#include "utils.cpp"
+
 using namespace std;
 
 class User;
 class BusRoute;
 class ConsoleApp;
-
-int getInt(int min_val, int max_val, string message) {
-    cout << message << endl;
-    int value;
-    cin >> value;
-    return value;
-    // todo: modify
-}
-
-string getString(string message) {
-    cout << message << endl;
-    string result;
-    cin.ignore(INT_MAX, '\n');
-    getline(cin, result);
-    return result;
-    // todo: modify
-}
-
-Datetime getDate(string message) {
-    cout << message << endl;
-    int d = getInt(1, 31, "Enter day: ");
-    int m = getInt(1, 12, "Enter month: ");
-    int y = getInt(1, 9999, "Enter year: ");
-    int h = getInt(0, 23, "Enter hour: ");
-    int mm = getInt(0, 59, "Enter minute: ");
-    Datetime dt = Datetime(d, m, y, h, mm);
-    return dt;
-}
 
 class ConsoleApp {
     vector<User*> users;
@@ -94,8 +68,8 @@ public:
     }
 
     void run() {
-        string login = getString("Enter login");
-        string password = getString("Enter password");
+        string login = utils::getString("Enter login");
+        string password = utils::getString("Enter password");
         string salted_password = this->encrypt(password);
         // User *user = nullptr;
         // for (int i = 0; i < this->users.size(); i++) {
@@ -139,7 +113,7 @@ public:
     virtual void main() {
         cout << "Logged in as user " << this->login << endl;
         cout << "Menu: \n1. View all tickets\n2. Buy ticket\n3. View booked tickets\n4. Cancel ticket\n5. Log out" << endl;
-        int e = getInt(1, 3, "Choose menu option");
+        int e = utils::getInt(1, 3, "Choose menu option");
         bool exitFlag = false;
         while (!exitFlag) {
             switch (e) {
