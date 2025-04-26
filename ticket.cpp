@@ -1,5 +1,6 @@
 #include "ticket.h"
 #include "jsonserializer.h"
+#pragma once
 
 Ticket::Ticket(int routeId, int quantity): routeId(routeId), quantity(quantity) {}
 

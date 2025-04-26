@@ -3,15 +3,15 @@
 #include <memory>
 #include <fstream>
 #include <map>
-#include "datetime.h"
-#include "jsonserializer.h"
-#include "jsondeserializer.h"
+#include "datetime.cpp"
+#include "jsonserializer.cpp"
+#include "jsondeserializer.cpp"
+#include "ticket.cpp"
 using namespace std;
 
 class User;
 class BusRoute;
 class ConsoleApp;
-class Ticket;
 
 int getInt(int min_val, int max_val, string message) {
     cout << message << endl;
@@ -224,99 +224,6 @@ public:
 
     virtual bool is_admin() {
         return true;
-    }
-};
-
-
-class Ticket{
-public:
-    int routeId;
-    int quantity;
-    int is_canceled = 0;
-
-    Ticket(int routeId, int quantity): routeId(routeId), quantity(quantity) {}
-
-    void cancel() {
-        // this->get_bus();
-        this->is_canceled = 1;
-    }
-
-    // BusRoute* get_bus() {
-    //     return app.get_bus(this->routeId);
-    // }
-
-    string serialize() {
-        JsonSerializer serializer = JsonSerializer();
-        serializer.serialize_int("routeId", this->routeId);
-        serializer.serialize_int("quantity", this->quantity);
-        serializer.serialize_int("is_canceled", this->is_canceled);
-        return serializer.get_result();
-    }
-
-    Ticket(string json) {
-        JsonDeserializer deserializer = JsonDeserializer(json);
-        this->routeId = deserializer.deserialize_int("routeId");
-        this->quantity = deserializer.deserialize_int("quantity");
-        this->is_canceled = deserializer.deserialize_int("is_canceled");
-    }
-
-};
-
-class BusRoute{
-public:
-    string origin;
-    string destination;
-    Datetime departure;
-    Datetime arrival;
-    int seatsTotal;
-    int ticketsLeft;
-    int routeId;
-
-    BusRoute(string origin, string destination, Datetime departure, Datetime arrival, int tickets): 
-        origin(origin), destination(destination), departure(departure), arrival(arrival), seatsTotal(tickets), ticketsLeft(tickets)  {
-        
-        this->routeId = app.create_unique_route_id();
-        app.add_route(this);
-    }
-
-    Ticket buy_ticket(int quantity) {
-        if (quantity >= this->ticketsLeft) {
-            this->ticketsLeft -= quantity;
-            return Ticket(this->routeId, quantity);
-        } else {
-            return Ticket(this->routeId, 0);
-        }
-    }
-
-    void cancel_ticket(Ticket t) {
-        if (t.routeId == this->routeId) {
-            if (t.is_canceled == 0) {
-                this->ticketsLeft += t.quantity;
-            }
-        }
-    }
-
-    string serialize() {
-        JsonSerializer serializer = JsonSerializer();
-        serializer.serialize_string("origin", this->origin);
-        serializer.serialize_string("destination", this->destination);
-        serializer.serialize_dt("departure", this->departure);
-        serializer.serialize_dt("arrival", this->arrival);
-        serializer.serialize_int("seatsTotal", this->seatsTotal);
-        serializer.serialize_int("ticketsLeft", this->ticketsLeft);
-        serializer.serialize_int("routeId", this->routeId);
-        return serializer.get_result();
-    }
-
-    BusRoute(string json) {
-        JsonDeserializer deserializer = JsonDeserializer(json);
-        this->origin = deserializer.deserialize_string("origin");
-        this->destination = deserializer.deserialize_string("destination");
-        this->departure = deserializer.deserialize_dt("departure");
-        this->arrival = deserializer.deserialize_dt("arrival");
-        this->seatsTotal = deserializer.deserialize_int("seatsTotal");
-        this->ticketsLeft = deserializer.deserialize_int("ticketsLeft");
-        this->routeId = deserializer.deserialize_int("routeId");
     }
 };
 

@@ -2,6 +2,8 @@
 #include "jsondeserializer.h"
 #pragma once
 
+class BusRoute;
+
 class Ticket{
 public:
     int routeId;
@@ -12,7 +14,7 @@ public:
 
     void cancel();
 
-    // BusRoute* get_bus();
+    BusRoute* get_bus();
 
     string serialize();
 
