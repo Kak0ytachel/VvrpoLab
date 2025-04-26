@@ -3,9 +3,9 @@
 #include <memory>
 #include <fstream>
 #include <map>
-#include "datetime.cpp"
-#include "jsonserializer.cpp"
-#include "jsondeserializer.cpp"
+#include "datetime.h"
+#include "jsonserializer.h"
+#include "jsondeserializer.h"
 using namespace std;
 
 class User;
