@@ -10,6 +10,7 @@
 #include "utils.cpp"
 #include "consoleapp.cpp"
 #include "user.cpp"
+#include "administrator.cpp"
 
 using namespace std;
 
@@ -21,24 +22,6 @@ class ConsoleApp;
 ConsoleApp app = ConsoleApp("test.data");
 
 
-class Administrator: public User {
-public: 
-    Administrator(string name, string login, string password): User(name, login, password){
-
-    }
-
-    void create_user() {
-
-    }
-
-    virtual void main() {
-        cout << "Admin" << endl;
-    }
-
-    virtual bool is_admin() {
-        return true;
-    }
-};
 
 
 
@@ -52,9 +35,10 @@ int main() {
     cout << deserializer.deserialize_int("age") << endl;
     cout << deserializer.deserialize_string("name") << endl;
     // int a = deserializer.deserialize_vector<int>();
-    cout << "Hi";
     // cout << a;
-
+    Administrator a = Administrator("Name", "Login", "Passw0rd");
+    
+    cout << "Hi";
 
     // Administrator admin = Administrator();
     // admin.main();
