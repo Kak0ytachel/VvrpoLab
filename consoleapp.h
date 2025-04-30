@@ -11,23 +11,18 @@ class User;
 class BusRoute;
 
 class ConsoleApp {
-    vector<User*> users;
     vector<BusRoute*> buses;
     int next_route_id = 1001;
     string filename;
 public:    
+    
+    vector<User*> users;
     ConsoleApp(string filename);
 
-    string encrypt(string pass);
-
-    // BusRoute* get_bus(int route_id) {
-    //     // for (int i = 0; i < this->buses.size(); i++) {
-    //     //     if (this->buses[i]->routeId == route_id) {
-    //     //         return this->buses[i];
-    //     //     }
-    //     // }
-    // }
+    BusRoute* get_bus(int route_id);
     
+    vector<BusRoute*> get_all_buses();
+
     void load_file();
 
     bool get_data();
@@ -40,3 +35,5 @@ public:
 
     void add_route(BusRoute *bus);
 };
+
+ConsoleApp *app = nullptr;

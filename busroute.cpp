@@ -1,15 +1,18 @@
 #include "busroute.h"
 #include "jsonserializer.h"
+#include "consoleapp.h"
+
+extern ConsoleApp *app;
 
 BusRoute::BusRoute(string origin, string destination, Datetime departure, Datetime arrival, int tickets): 
     origin(origin), destination(destination), departure(departure), arrival(arrival), seatsTotal(tickets), ticketsLeft(tickets)  {
     
-    // this->routeId = app.create_unique_route_id();
-    // app.add_route(this);
+    this->routeId = app->create_unique_route_id();
+    app->add_route(this);
 }
 
 Ticket BusRoute::buy_ticket(int quantity) {
-    if (quantity >= this->ticketsLeft) {
+    if (quantity <= this->ticketsLeft) {
         this->ticketsLeft -= quantity;
         return Ticket(this->routeId, quantity);
     } else {

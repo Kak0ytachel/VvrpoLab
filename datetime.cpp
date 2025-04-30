@@ -1,5 +1,6 @@
 #include "datetime.h"
 #pragma once
+using namespace std;
 
 Datetime::Datetime(int d, int mo, int y, int h, int mi): day(d), month(mo), year(y), minute(mi), hour(h) {}
 
@@ -67,3 +68,21 @@ bool Datetime::is_leap_year() {
     return this->is_leap_year(this->year);
 } 
 
+string Datetime::format_dt() {
+    return this->format_t() + " " + this->format_d();
+}
+
+string Datetime::format_d() {
+    string s = ((this->day < 10)? "0": "") + to_string(this->day) + '.' + ((this->month < 10)? "0": "") + to_string(this->month) + '.' + ((this->year < 10)? "0": "") + to_string(this->year); 
+    return s;
+}
+
+string Datetime::format_t() {
+    string s = ((this->hour < 10)? "0": "") + to_string(this->hour) + ':' + ((this->minute < 10)? "0": "") + to_string(this->minute);
+    return s;
+}
+
+// std::ostream& operator << (std::ostream &os, const Datetime &dt)
+// {
+//     return os << setw(2) << setfill('0') << dt.day << "." << setw(2) << setfill('0') << dt.month << "." << setw(4) << setfill('0') <<  dt.year;
+// }

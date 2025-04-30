@@ -32,3 +32,11 @@ Datetime utils::getDate(string message) {
 string utils::encrypt(string pass) {
     return pass;
 }
+
+string utils::centered(string s, int l) {
+    if (s.size() >= l) {
+        return s;
+    }
+    s = string((l - s.size()) / 2, ' ') + s + string((l - s.size()) / 2 + (l - s.size()) % 2, ' ');
+    return s;
+}

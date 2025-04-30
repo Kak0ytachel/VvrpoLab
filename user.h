@@ -18,10 +18,10 @@ public:
 
     virtual void main() {
         cout << "Logged in as user " << this->login << endl;
-        cout << "Menu: \n1. View all tickets\n2. Buy ticket\n3. View booked tickets\n4. Cancel ticket\n5. Log out" << endl;
-        int e = utils::getInt(1, 3, "Choose menu option");
         bool exitFlag = false;
         while (!exitFlag) {
+            cout << "Menu: \n1. View all tickets\n2. Buy ticket\n3. View booked tickets\n4. Cancel ticket\n5. Log out" << endl;
+            int e = utils::getInt(1, 3, "Choose menu option");
             switch (e) {
                 case 1: {
                     this->see_tickets();

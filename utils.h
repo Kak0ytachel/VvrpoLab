@@ -10,4 +10,6 @@ namespace utils{
     Datetime getDate(string message);
 
     string encrypt(string pass);
+
+    string centered(string s, int l);
 }

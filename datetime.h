@@ -38,5 +38,12 @@ public:
         }
         return false;
     }
+
+    std::string format_dt();
+
+    std::string format_d();
+
+    std::string format_t();
 };
 
+std::ostream& operator << (std::ostream &os, const Datetime &dt);

@@ -10,22 +10,15 @@
 #include "utils.cpp"
 #include "consoleapp.cpp"
 #include "user.cpp"
+#include "busroute.cpp"
 #include "administrator.cpp"
 
 using namespace std;
 
-class User;
-class BusRoute;
-class ConsoleApp;
-
-
-ConsoleApp app = ConsoleApp("test.data");
-
-
-
-
+extern ConsoleApp *app;
 
 int main() {
+    app = new ConsoleApp("test.data");
     JsonSerializer serializer = JsonSerializer();
     serializer.serialize_int("age", 10);
     serializer.serialize_string("name", "Mike");
@@ -36,10 +29,18 @@ int main() {
     cout << deserializer.deserialize_string("name") << endl;
     // int a = deserializer.deserialize_vector<int>();
     // cout << a;
-    Administrator a = Administrator("Name", "Login", "Passw0rd");
-    
+    Administrator *a = new Administrator("Name", "Login", "Passw0rd");
+    User *u = new User("Idk", "lol", "pw");
+    BusRoute route = BusRoute("Minsk", "Grodno1", Datetime(0), Datetime(60), 25);
+    BusRoute route2 = BusRoute("Minsk", "Grodno2", Datetime(3600), Datetime(3660), 15);
     cout << "Hi";
-
+    cout << route2.routeId;
+    cout << app->get_bus(1002)->origin << endl;
+    Ticket t = route2.buy_ticket(2);
+    cout << t.get_bus()->destination;
+    app->users.push_back(a);
+    app->users.push_back(u);
+    app->run();
     // Administrator admin = Administrator();
     // admin.main();
     // vector<User*> v;
