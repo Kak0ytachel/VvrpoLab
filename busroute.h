@@ -19,7 +19,7 @@ public:
 
     Ticket buy_ticket(int quantity);
 
-    void cancel_ticket(Ticket t);
+    void cancel_ticket(Ticket *t);
 
     string serialize();
 

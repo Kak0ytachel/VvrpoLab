@@ -20,10 +20,12 @@ Ticket BusRoute::buy_ticket(int quantity) {
     }
 }
 
-void BusRoute::cancel_ticket(Ticket t) {
-    if (t.routeId == this->routeId) {
-        if (t.is_canceled == 0) {
-            this->ticketsLeft += t.quantity;
+void BusRoute::cancel_ticket(Ticket *t) {
+    if (t->routeId == this->routeId) {
+        if (t->is_canceled == 0) {
+            this->ticketsLeft += t->quantity;
+            t->is_canceled = 1;
+            t->quantity = 0;
         }
     }
 }

@@ -27,7 +27,7 @@ void User::see_tickets() {
             << "|" << utils::centered(bus->destination, 12) << "|" << utils::centered(bus->arrival.format_t(), 12) << "|" <<
             utils::centered(to_string(bus->ticketsLeft), 10) << endl;
     }
-    int choice = utils::getInt(0, buses.size(), "Enter number of ticket for details or 0 to exit");
+    int choice = utils::getInt(0, buses.size(), "Enter number of ticket for details or 0 to exit: ");
     if (choice == 0) {
         return;
     }
@@ -40,24 +40,25 @@ void User::see_tickets() {
         cout << "Arrival: " << bus->arrival.format_dt() << endl;
         cout << "Tickets left: " << bus->ticketsLeft << endl;
         cout << "Options: \n1. Book ticket(s)\n2. Back to tickets list\n3. Exit to menu\n";
-        int option = utils::getInt(1, 3, "Choose option");
+        int option = utils::getInt(1, 3, "Choose option: ");
         switch(option) {
             case (1): {
-            int quantity = utils::getInt(0, bus->ticketsLeft, "Enter quantity of tickets to book");
-            if (quantity == 0) {
-                cout << "Cancelled booking" << endl;
+                int quantity = utils::getInt(0, bus->ticketsLeft, "Enter quantity of tickets to book: ");
+                if (quantity == 0) {
+                    cout << "Cancelled booking" << endl;
+                }
+                this->tickets.push_back(bus->buy_ticket(quantity));
+                cout << "Booked " << quantity << " tickets" << endl;
+                break;
+            } 
+            case (2): {
+                this->see_tickets();
+                return;
             }
-            this->tickets.push_back(bus->buy_ticket(quantity));
-            cout << "Booked " << quantity << " tickets" << endl;
-            break;
-        } 
-        case (2): {
-            this->see_tickets();
-            return;
+            case (3): {
+                return;
+            }
         }
-        case (3): {
-            return;
-        }}
     }
 
 }
@@ -68,6 +69,45 @@ void User::buy_ticket() {
 
 void User::check_booked_tickets() {
     cout << "Checked booked tickets";
+    cout << endl;
+    cout << " No. |" << utils::centered("Origin", 12) << "|" << utils::centered("Departure", 12) << "|" << utils::centered("Destination", 12) << "|" << 
+        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << endl;
+    vector<Ticket> tickets = this->tickets;
+    for (int i = 0; i < tickets.size(); i++) {
+        BusRoute *bus = tickets[i].get_bus();
+        cout << utils::centered(to_string(i+1) + ".", 5) << "|" << utils::centered(bus->origin, 12) << "|" << utils::centered(bus->departure.format_t(), 12) 
+            << "|" << utils::centered(bus->destination, 12) << "|" << utils::centered(bus->arrival.format_t(), 12) << "|" <<
+            utils::centered(to_string(tickets[i].quantity), 10) << endl;
+    }
+    int choice = utils::getInt(0, tickets.size(), "Enter number of ticket for details or 0 to exit: ");
+    if (choice == 0) {
+        return;
+    }
+    BusRoute *bus = tickets[choice-1].get_bus();
+    while (true) {
+        cout << "Details: " << endl;
+        cout << "Origin: " << bus->origin << endl;
+        cout << "Departure: " << bus->departure.format_dt() << endl;
+        cout << "Destination: " << bus->destination << endl;
+        cout << "Arrival: " << bus->arrival.format_dt() << endl;
+        cout << "Tickets booked: " << tickets[choice-1].quantity << endl;
+        cout << "Options: \n1. Cancel ticket(s)\n2. Back to tickets list\n3. Exit to menu\n";
+        int option = utils::getInt(1, 3, "Choose option: ");
+        switch(option) {
+            case (1): {
+                tickets[choice-1].cancel();
+                this->tickets.erase(this->tickets.begin() + choice - 1);
+                cout << "Cancelled tickets" << endl;
+            } 
+            case (2): {
+                this->check_booked_tickets();
+                return;
+            }
+            case (3): {
+                return;
+            }
+        }
+    }
 }
 
 void User::cancel_ticket() {

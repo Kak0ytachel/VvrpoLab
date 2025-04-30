@@ -19,6 +19,7 @@ extern ConsoleApp *app;
 
 int main() {
     app = new ConsoleApp("test.data");
+    int po = utils::getInt(0, 5, "Idk: ");
     JsonSerializer serializer = JsonSerializer();
     serializer.serialize_int("age", 10);
     serializer.serialize_string("name", "Mike");

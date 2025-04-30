@@ -1,6 +1,7 @@
 #include "ticket.h"
 #include "jsonserializer.h"
 #include "consoleapp.h"
+#include "busroute.h"
 #pragma once
 
 extern ConsoleApp *app;
@@ -8,8 +9,7 @@ extern ConsoleApp *app;
 Ticket::Ticket(int routeId, int quantity): routeId(routeId), quantity(quantity) {}
 
 void Ticket::cancel() {
-    // this->get_bus();
-    this->is_canceled = 1;
+    this->get_bus()->cancel_ticket(this);
 }
 
 BusRoute* Ticket::get_bus() {
