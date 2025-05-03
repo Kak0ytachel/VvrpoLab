@@ -8,13 +8,13 @@ Administrator::Administrator(string name, string login, string password): User(n
 extern ConsoleApp *app;
 
 void Administrator::manage_users() {
-    vector<User*> users = app->users;
+    vector<User*> &users = app->users;
     // TODO: user table
     for (int i = 0; i < users.size(); i++) {
         User *user = users[i];
         cout << utils::centered(to_string(i + 1) + ".", 5) << user->name << endl;
     }
-    int choice = utils::getInt(0, users.size(), "Enter 0 to leave, user index 1 - " + to_string(users.size() - 1) + 
+    int choice = utils::getInt(0, users.size(), "Enter 0 to leave, user index 1 - " + to_string(users.size()) + 
         ", or " + to_string(users.size()) + " to create new user: ");
     if (choice == 0) {
         return;
@@ -35,6 +35,7 @@ void Administrator::manage_users() {
         cout << "Successfully created " << (is_admin? "administrator ": "user ") << name << endl;
         return this->manage_users();
     }
+    choice--;
     while (true) {
         cout << "User info: " << endl;
         cout << "1. Name: " << users[choice]->name << endl;
@@ -56,10 +57,12 @@ void Administrator::manage_users() {
                     User *u = users[choice];
                     users[choice] = a;
                     delete u;
+                    cout << "users[choice] = " << users[choice] << endl;
                 } else {
                     User *u = new User(users[choice]->serialize());
-                    delete users[choice];
+                    User *a = users[choice];
                     users[choice] = u;
+                    delete a;
                 }
             }
         } else {

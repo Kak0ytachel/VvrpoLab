@@ -42,8 +42,6 @@ public:
     virtual bool is_admin() {
         return true;
     }
-
-    // string serialize();
-
+    
     Administrator(string json);
 };
