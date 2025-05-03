@@ -40,8 +40,17 @@ void User::see_tickets() {
                 if (quantity == 0) {
                     cout << "Cancelled booking" << endl;
                 }
-                // TODO: merge the same tickets
-                this->tickets.push_back(bus->buy_ticket(quantity));
+                Ticket *new_ticket = bus->buy_ticket(quantity);
+                for (int i = 0; i < this->tickets.size(); i++) {
+                    if (this->tickets[i]->routeId == new_ticket->routeId && this->tickets[i]->is_canceled == 0) {
+                        this->tickets[i]->quantity += new_ticket->quantity;
+                        delete new_ticket;
+                        new_ticket = nullptr;
+                    }
+                }
+                if (new_ticket != nullptr) {
+                    this->tickets.push_back(new_ticket);
+                }
                 cout << "Booked " << quantity << " tickets" << endl;
                 break;
             } 
