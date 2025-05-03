@@ -52,3 +52,5 @@ string Administrator::serialize() {
     cout << serializer.get_result();
     return serializer.get_result();
 }
+
+Administrator::Administrator(string json): User(json) {}

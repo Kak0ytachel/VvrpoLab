@@ -25,7 +25,7 @@ public:
 
     void load_file();
 
-    bool get_data();
+    string get_data();
 
     void save_data();
 
@@ -34,6 +34,8 @@ public:
     int create_unique_route_id();
 
     void add_route(BusRoute *bus);
+
+    string serialize();
 };
 
 ConsoleApp *app = nullptr;

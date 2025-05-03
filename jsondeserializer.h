@@ -2,6 +2,7 @@
 #include <map>
 #include <vector>
 #include "datetime.h"
+#include "user.h"
 #pragma once
 
 
@@ -20,4 +21,6 @@ public:
 
     template<typename T>
     std::vector<T*> deserialize_vector(std::string key);
+
+    std::vector<User*> deserialize_user_vector(std::string key);
 };

@@ -4,11 +4,21 @@
 #pragma once
 
 ConsoleApp::ConsoleApp(string filename): filename(filename) {
-    bool flag = this->get_data();
-    if (!flag) {
+    string json = this->get_data();
+    if (json.size() == 0) {
         cout << "Unable to read data file" << endl;
         this->filename = "data.dat";
+        User *u = new User("Default", "user", "user");
+        Administrator *a = new Administrator("Admin", "admin", "admin");
+        this->users.push_back(u);
+        this->users.push_back(a);
+        return;
     }
+    JsonDeserializer deserializer = JsonDeserializer(json);
+    this->users = deserializer.deserialize_user_vector("users");
+    this->buses = deserializer.deserialize_vector<BusRoute>("buses");
+    this->next_route_id = deserializer.deserialize_int("next_route_id");
+    
 }
 
 BusRoute* ConsoleApp::get_bus(int route_id) {
@@ -31,7 +41,7 @@ void ConsoleApp::load_file() {
     
 }
 
-bool ConsoleApp::get_data() {
+string ConsoleApp::get_data() {
     ifstream fin;
     fin.open(this->filename);
     if (fin.is_open()) {
@@ -39,9 +49,9 @@ bool ConsoleApp::get_data() {
         getline(fin, line);
         // TODO
 
-        return true;
+        return line;
     } else {
-        return false;
+        return "";
     }
 
 }
@@ -83,8 +93,10 @@ void ConsoleApp::add_route(BusRoute *bus) {
     this->buses.push_back(bus);
 }
 
-// string serialize() {
-//     // JsonSerializer serializer = JsonSerializer();
-//     // serializer.serialize_vector<User>("users", users);
-//     // serializer.serialize_vector
-// }
+string ConsoleApp::serialize() {
+    JsonSerializer serializer = JsonSerializer();
+    serializer.serialize_vector<User>("users", this->users);
+    serializer.serialize_vector<BusRoute>("buses", this->buses);
+    serializer.serialize_int("next_route_id", this->next_route_id);
+    return serializer.get_result();
+}

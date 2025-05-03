@@ -1,5 +1,6 @@
 #include <iostream>
 #include "jsondeserializer.h"
+#include "administrator.h"
 #pragma once
 using namespace std;
 
@@ -86,6 +87,65 @@ int JsonDeserializer::deserialize_int(string key) {
 Datetime JsonDeserializer::deserialize_dt(string key) {
     Datetime dt = Datetime(deserialize_int(key));
     return dt;
+}
+
+vector<User*> JsonDeserializer::deserialize_user_vector(string key) {
+    string s = this->dict[key];
+    vector<User*> values;
+    int start = s.find_first_of('[');
+    int finish = s.find_last_of(']');
+    int i = start;
+    while (true) {
+        if (s[i] == ' ') {
+            i++;
+            continue;
+        }
+        int a = 0;
+        int square_braces = 0;
+        int curly_bracets = 0;
+        int quotes = 0;
+        while (true) {
+            if (input[i] == '[') {
+                square_braces++;
+            } else if (input[i] == ']') {
+                square_braces--;
+            } else if (input[i] == '{') {
+                curly_bracets++;
+            } else if (input[i] == '}') {
+                curly_bracets--;
+            } else if (input[i] == '"') {
+                quotes = 1 - quotes;
+            }
+            if (square_braces == 0 && curly_bracets == 0 && quotes == 0) {
+                break;
+            }
+            i++;
+        }
+        int b = i;
+        string element = s.substr(a, b - a + 1);
+
+        JsonDeserializer deserializer = JsonDeserializer(element);
+        int is_admin = deserializer.deserialize_int("is_admin");
+        if (is_admin == 1) {
+            Administrator *t = new Administrator(element);
+            values.push_back(t);
+        } else {
+            User *t = new User(element);
+            values.push_back(t);
+        }
+        
+        i++;
+        while (s[i] == ' ') {
+            i++;
+        }
+        if (s[i] == ',') {
+            continue;
+        }
+        if (s[i] == ']') {
+            break;
+        }
+    }
+    return values;
 }
 
 template<typename T>

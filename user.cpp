@@ -113,7 +113,5 @@ User::User(string json) {
     this->login = deserializer.deserialize_string("login");
     this->name = deserializer.deserialize_string("name");
     this->salted_password = deserializer.deserialize_string("salted_password");
-
-
-    vector<Ticket*> temp = deserializer.deserialize_vector<Ticket>("tickets");
+    this->tickets = deserializer.deserialize_vector<Ticket>("tickets");
 }
