@@ -46,6 +46,7 @@ void User::see_tickets() {
                         this->tickets[i]->quantity += new_ticket->quantity;
                         delete new_ticket;
                         new_ticket = nullptr;
+                        break;
                     }
                 }
                 if (new_ticket != nullptr) {
