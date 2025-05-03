@@ -5,9 +5,11 @@
 using namespace std;
 
 JsonDeserializer::JsonDeserializer(string input): input(input) {
+    cout << "New deserializer" << endl;
+    cout << "input string is " << input << endl;
     int start = input.find_first_of('{');
     int i = start;
-    while (true) {
+    while (i < input.size() - 1) {
         cout << "cycle 1, i = " << i << endl;
         int a = input.find('"', i);
         int b = input.find('"', a + 1);
@@ -23,7 +25,10 @@ JsonDeserializer::JsonDeserializer(string input): input(input) {
         int d;
         int e;
         while (true) {
-            cout << "cycle 2, s[i] = " << input[i] << endl;
+            cout << "cycle 2, s[i] = " << input[i] << ", i=" << i << endl;
+            if (i == -1) {
+                return;
+            }
             if (input[i] == '"') {
                 d = i;
                 e = input.find('"', i + 1);
@@ -36,7 +41,7 @@ JsonDeserializer::JsonDeserializer(string input): input(input) {
                 int curly_bracets = 0;
                 int quotes = 0;
                 while (true) {
-                    cout << "cycle 3, input[i] = " << input[i] << endl;
+                    // cout << "cycle 3, input[i] = " << input[i] << endl;
                     if (input[i] == '[') {
                         square_braces++;
                     } else if (input[i] == ']') {
@@ -48,10 +53,10 @@ JsonDeserializer::JsonDeserializer(string input): input(input) {
                     } else if (input[i] == '"') {
                         quotes = 1 - quotes;
                     }
+                    i++;
                     if (square_braces == 0 && curly_bracets == 0 && quotes == 0) {
                         break;
                     }
-                    i++;
                 }
                 e = i;
                 value = input.substr(d, e - d);
@@ -72,6 +77,13 @@ JsonDeserializer::JsonDeserializer(string input): input(input) {
             i++;
             continue;
         }
+    }
+
+    cout << "Done deserializing" << endl;
+    for(auto const &ent : dict) {
+        cout << ent.first << ": " << ent.second << endl;
+    // ent.first is the second key
+    // ent.second is the data
     }
 }
 
@@ -94,29 +106,34 @@ vector<User*> JsonDeserializer::deserialize_user_vector(string key) {
     vector<User*> values;
     int start = s.find_first_of('[');
     int finish = s.find_last_of(']');
-    int i = start;
-    while (true) {
-        if (s[i] == ' ') {
+    int i = start + 1;
+    while (i < finish) {
+        cout << "des_u_v | i = " << i << ", s[i] = " << s[i] << endl; 
+        while (s[i] == ' ') {
+            i++;
+        }
+        if (s[i] == ',') {
             i++;
             continue;
         }
-        int a = 0;
+        int a = i;
         int square_braces = 0;
         int curly_bracets = 0;
         int quotes = 0;
         while (true) {
-            if (input[i] == '[') {
+            if (s[i] == '[') {
                 square_braces++;
-            } else if (input[i] == ']') {
+            } else if (s[i] == ']') {
                 square_braces--;
-            } else if (input[i] == '{') {
+            } else if (s[i] == '{') {
                 curly_bracets++;
-            } else if (input[i] == '}') {
+            } else if (s[i] == '}') {
                 curly_bracets--;
-            } else if (input[i] == '"') {
+            } else if (s[i] == '"') {
                 quotes = 1 - quotes;
             }
             if (square_braces == 0 && curly_bracets == 0 && quotes == 0) {
+                cout << "des_u_v breaking at i = " << i << ", s[i] = " << s[i] << endl;
                 break;
             }
             i++;
@@ -135,15 +152,6 @@ vector<User*> JsonDeserializer::deserialize_user_vector(string key) {
         }
         
         i++;
-        while (s[i] == ' ') {
-            i++;
-        }
-        if (s[i] == ',') {
-            continue;
-        }
-        if (s[i] == ']') {
-            break;
-        }
     }
     return values;
 }
@@ -154,26 +162,29 @@ vector<T*> JsonDeserializer::deserialize_vector(string key) {
     vector<T*> values;
     int start = s.find_first_of('[');
     int finish = s.find_last_of(']');
-    int i = start;
-    while (true) {
-        if (s[i] == ' ') {
+    int i = start + 1;
+    while (i < finish) {
+        while (s[i] == ' ') {
+            i++;
+        }
+        if (s[i] == ',') {
             i++;
             continue;
         }
-        int a = 0;
+        int a = i;
         int square_braces = 0;
         int curly_bracets = 0;
         int quotes = 0;
         while (true) {
-            if (input[i] == '[') {
+            if (s[i] == '[') {
                 square_braces++;
-            } else if (input[i] == ']') {
+            } else if (s[i] == ']') {
                 square_braces--;
-            } else if (input[i] == '{') {
+            } else if (s[i] == '{') {
                 curly_bracets++;
-            } else if (input[i] == '}') {
+            } else if (s[i] == '}') {
                 curly_bracets--;
-            } else if (input[i] == '"') {
+            } else if (s[i] == '"') {
                 quotes = 1 - quotes;
             }
             if (square_braces == 0 && curly_bracets == 0 && quotes == 0) {
@@ -183,18 +194,10 @@ vector<T*> JsonDeserializer::deserialize_vector(string key) {
         }
         int b = i;
         string element = s.substr(a, b - a + 1);
+        cout << "Vector element json string: " << element << endl;
         T *t = new T(element);
         values.push_back(t);
         i++;
-        while (s[i] == ' ') {
-            i++;
-        }
-        if (s[i] == ',') {
-            continue;
-        }
-        if (s[i] == ']') {
-            break;
-        }
     }
     return values;
 }

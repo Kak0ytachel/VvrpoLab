@@ -7,13 +7,14 @@ ConsoleApp::ConsoleApp(string filename): filename(filename) {
     string json = this->get_data();
     if (json.size() == 0) {
         cout << "Unable to read data file" << endl;
-        this->filename = "data.dat";
+        this->filename = "data.json";
         User *u = new User("Default", "user", "user");
         Administrator *a = new Administrator("Admin", "admin", "admin");
         this->users.push_back(u);
         this->users.push_back(a);
         return;
     }
+    cout << "Deserializing ConsoleApp" << endl;
     JsonDeserializer deserializer = JsonDeserializer(json);
     this->users = deserializer.deserialize_user_vector("users");
     this->buses = deserializer.deserialize_vector<BusRoute>("buses");
@@ -59,6 +60,11 @@ string ConsoleApp::get_data() {
 void ConsoleApp::save_data() {
     ofstream fout;
     fout.open(this->filename);
+    string json = this->serialize();
+    cout << endl << "result" << endl;
+    cout << json;
+    fout << json;
+    fout.close();
     
 }
 
@@ -78,6 +84,7 @@ void ConsoleApp::run() {
         if (user != nullptr) {
             user->main();
             exitFlag = true;
+            this->save_data();
         } else {
             cout << "Wrong login or password. Please try again" << endl;
         }

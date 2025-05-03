@@ -32,12 +32,15 @@ void JsonSerializer::serialize_vector(string key, vector<T*> elements) {
     string s = "[";
     for (int i = 0; i < elements.size(); i++) {
         s += elements[i]->serialize();
-        if (i == elements.size() - 1) {
+        if (i != elements.size() - 1) {
             s += ", ";
         }
     }
     s += "]";
-    this->serialize_string(key, s);
+    this->add_comma();
+    string s2 = "\"" + key + "\": " + s;
+    this->result.insert(this->insert_index, s2);
+    this->insert_index += s2.size();
 }
 
 

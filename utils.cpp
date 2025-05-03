@@ -1,5 +1,8 @@
 #include <iostream>
+#include <vector>
 #include "utils.h"
+#include "ticket.h"
+#include "busroute.h"
 
 int utils::getInt(int min_val, int max_val, string message) {
     cout << message;

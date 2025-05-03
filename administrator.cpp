@@ -35,22 +35,58 @@ void Administrator::manage_users() {
         cout << "Successfully created " << (is_admin? "administrator ": "user ") << name << endl;
         return this->manage_users();
     }
-    // TODO: manage user
+    while (true) {
+        cout << "User info: " << endl;
+        cout << "1. Name: " << users[choice]->name << endl;
+        cout << "2. Login: " << users[choice]->login << endl;
+        cout << "3. Password: *hidden*" << endl;
+        cout << "4. Role: " << ((users[choice]->is_admin() == 1)? "administrator": "user") << endl;
+        // TODO: (questionable) add ticket managing
+        // TODO: (questionable) add account deleting
+        int k = utils::getInt(0, 4, "Enter field number to edit or 0 to return: ");
+        if (k == 0) {
+            return this->manage_users();
+        }
+        if (k == 4) {
+            if (users[choice] == this) {
+                cout << "Unable to change own role " << endl;
+            } else {
+                if (users[choice]->is_admin() == 0) {
+                    Administrator *a = new Administrator(users[choice]->serialize());
+                    User *u = users[choice];
+                    users[choice] = a;
+                    delete u;
+                } else {
+                    User *u = new User(users[choice]->serialize());
+                    delete users[choice];
+                    users[choice] = u;
+                }
+            }
+        } else {
+            string val = utils::getString("Enter new value");
+            switch (k) {
+                case 1: {
+                    users[choice]->name = val;
+                    cout << "Successfully changed user's name" << endl;
+                    break;
+                }
+                case 2: {
+                    users[choice]->login = val;
+                    cout << "Successfully changed user's login" << endl;
+                    break;
+                }
+                case 3: {
+                    users[choice]->salted_password = utils::encrypt(val);
+                    cout << "Successfully changed user's password" << endl;
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void Administrator::manage_buses() {
 
-}
-
-string Administrator::serialize() {
-    JsonSerializer serializer = JsonSerializer();
-    serializer.serialize_string("login", this->login);
-    serializer.serialize_string("salted_password", this->salted_password);
-    serializer.serialize_string("name", this->name);
-    serializer.serialize_vector<Ticket>("tickets", this->tickets);
-    serializer.serialize_int("is_admin", 1);
-    cout << serializer.get_result();
-    return serializer.get_result();
 }
 
 Administrator::Administrator(string json): User(json) {}

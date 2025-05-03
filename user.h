@@ -17,10 +17,10 @@ public:
     User(string name, string login, string password);
 
     virtual void main() {
-        cout << "Logged in as user " << this->login << endl;
+        cout << "Logged in as user " << this->name << endl;
         bool exitFlag = false;
         while (!exitFlag) {
-            cout << "Menu: \n1. Browse ticket\n2. View booked tickets\n3. Log out" << endl;
+            cout << "Menu: \n1. Browse bus routes\n2. View booked tickets\n3. Log out" << endl;
             int e = utils::getInt(1, 3, "Choose menu option: ");
             switch (e) {
                 case 1: {

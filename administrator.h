@@ -12,14 +12,38 @@ public:
     void manage_buses();
 
     virtual void main() {
-        cout << "Admin" << endl;
+        cout << "Logged in as administrator " << this->name << endl;
+        bool exitFlag = false;
+        while (!exitFlag) {
+            cout << "Menu: \n1. Browse bus routes\n2. View booked tickets\n3. Manage users\n4. Log out" << endl;
+            int e = utils::getInt(1, 3, "Choose menu option: ");
+            switch (e) {
+                case 1: {
+                    this->see_tickets();
+                    break;
+                }
+                case 2: {
+                    this->check_booked_tickets();
+                    break;
+                }
+                case 3: {
+                    this->manage_users();
+                    break;
+                }
+                case 4: {
+                    cout << "Logging out..." << endl;
+                    exitFlag = true;
+                    break;
+                }
+            }
+        }
     }
 
     virtual bool is_admin() {
         return true;
     }
 
-    string serialize();
+    // string serialize();
 
     Administrator(string json);
 };

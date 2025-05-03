@@ -103,12 +103,13 @@ string User::serialize() {
     serializer.serialize_string("salted_password", this->salted_password);
     serializer.serialize_string("name", this->name);
     serializer.serialize_vector<Ticket>("tickets", this->tickets);
-    serializer.serialize_int("is_admin", 0);
-    cout << serializer.get_result();
+    serializer.serialize_int("is_admin", this->is_admin());
+    cout << serializer.get_result() << endl;
     return serializer.get_result();
 }
 
 User::User(string json) {
+    cout << "Deeserializing User" << endl;
     JsonDeserializer deserializer = JsonDeserializer(json);
     this->login = deserializer.deserialize_string("login");
     this->name = deserializer.deserialize_string("name");
