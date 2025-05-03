@@ -11,12 +11,12 @@ BusRoute::BusRoute(string origin, string destination, Datetime departure, Dateti
     app->add_route(this);
 }
 
-Ticket BusRoute::buy_ticket(int quantity) {
+Ticket* BusRoute::buy_ticket(int quantity) {
     if (quantity <= this->ticketsLeft) {
         this->ticketsLeft -= quantity;
-        return Ticket(this->routeId, quantity);
+        return new Ticket(this->routeId, quantity);
     } else {
-        return Ticket(this->routeId, 0);
+        return new Ticket(this->routeId, 0);
     }
 }
 

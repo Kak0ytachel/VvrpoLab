@@ -19,5 +19,5 @@ public:
     Datetime deserialize_dt(std::string key);
 
     template<typename T>
-    std::vector<T> deserialize_vector(std::string key);
+    std::vector<T*> deserialize_vector(std::string key);
 };

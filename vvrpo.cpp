@@ -37,8 +37,8 @@ int main() {
     cout << "Hi";
     cout << route2.routeId;
     cout << app->get_bus(1002)->origin << endl;
-    Ticket t = route2.buy_ticket(2);
-    cout << t.get_bus()->destination;
+    Ticket *t = route2.buy_ticket(2);
+    cout << t->get_bus()->destination;
     app->users.push_back(a);
     app->users.push_back(u);
     app->run();

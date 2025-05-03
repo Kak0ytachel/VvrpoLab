@@ -63,3 +63,25 @@ string utils::centered(string s, int l) {
 //		cin.ignore(99999, '\n'); // очистка буфера ввода
 //	}
 //}
+
+void utils::showBuses(vector<BusRoute*> buses) {
+    cout << " No. |" << utils::centered("Origin", 12) << "|" << utils::centered("Departure", 12) << "|" << utils::centered("Destination", 12) << "|" << 
+        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << endl;
+    for (int i = 0; i < buses.size(); i++) {
+        BusRoute *bus = buses[i];
+        cout << utils::centered(to_string(i+1) + ".", 5) << "|" << utils::centered(bus->origin, 12) << "|" << utils::centered(bus->departure.format_t(), 12) 
+            << "|" << utils::centered(bus->destination, 12) << "|" << utils::centered(bus->arrival.format_t(), 12) << "|" <<
+            utils::centered(to_string(bus->ticketsLeft), 10) << endl;
+    }
+}
+
+void utils::showTickets(vector<Ticket*> tickets) {
+    cout << " No. |" << utils::centered("Origin", 12) << "|" << utils::centered("Departure", 12) << "|" << utils::centered("Destination", 12) << "|" << 
+        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << endl;
+    for (int i = 0; i < tickets.size(); i++) {
+        BusRoute *bus = tickets[i]->get_bus();
+        cout << utils::centered(to_string(i+1) + ".", 5) << "|" << utils::centered(bus->origin, 12) << "|" << utils::centered(bus->departure.format_t(), 12) 
+            << "|" << utils::centered(bus->destination, 12) << "|" << utils::centered(bus->arrival.format_t(), 12) << "|" <<
+            utils::centered(to_string(tickets[i]->quantity), 10) << endl;
+    }
+}

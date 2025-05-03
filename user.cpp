@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "consoleapp.h"
 #include "busroute.h"
+#include "jsonserializer.h"
 #pragma once
 
 extern ConsoleApp *app;
@@ -18,15 +19,8 @@ User::User(string name, string login, string password) {
 void User::see_tickets() {
     cout << "See tickets";
     cout << endl;
-    cout << " No. |" << utils::centered("Origin", 12) << "|" << utils::centered("Departure", 12) << "|" << utils::centered("Destination", 12) << "|" << 
-        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << endl;
     vector<BusRoute*> buses = app->get_all_buses();
-    for (int i = 0; i < buses.size(); i++) {
-        BusRoute *bus = buses[i];
-        cout << utils::centered(to_string(i+1) + ".", 5) << "|" << utils::centered(bus->origin, 12) << "|" << utils::centered(bus->departure.format_t(), 12) 
-            << "|" << utils::centered(bus->destination, 12) << "|" << utils::centered(bus->arrival.format_t(), 12) << "|" <<
-            utils::centered(to_string(bus->ticketsLeft), 10) << endl;
-    }
+    utils::showBuses(buses);
     int choice = utils::getInt(0, buses.size(), "Enter number of ticket for details or 0 to exit: ");
     if (choice == 0) {
         return;
@@ -47,6 +41,7 @@ void User::see_tickets() {
                 if (quantity == 0) {
                     cout << "Cancelled booking" << endl;
                 }
+                // TODO: merge the same tickets
                 this->tickets.push_back(bus->buy_ticket(quantity));
                 cout << "Booked " << quantity << " tickets" << endl;
                 break;
@@ -63,39 +58,27 @@ void User::see_tickets() {
 
 }
 
-void User::buy_ticket() {
-    cout << "Buy tickets";
-}
-
 void User::check_booked_tickets() {
     cout << "Checked booked tickets";
     cout << endl;
-    cout << " No. |" << utils::centered("Origin", 12) << "|" << utils::centered("Departure", 12) << "|" << utils::centered("Destination", 12) << "|" << 
-        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << endl;
-    vector<Ticket> tickets = this->tickets;
-    for (int i = 0; i < tickets.size(); i++) {
-        BusRoute *bus = tickets[i].get_bus();
-        cout << utils::centered(to_string(i+1) + ".", 5) << "|" << utils::centered(bus->origin, 12) << "|" << utils::centered(bus->departure.format_t(), 12) 
-            << "|" << utils::centered(bus->destination, 12) << "|" << utils::centered(bus->arrival.format_t(), 12) << "|" <<
-            utils::centered(to_string(tickets[i].quantity), 10) << endl;
-    }
-    int choice = utils::getInt(0, tickets.size(), "Enter number of ticket for details or 0 to exit: ");
+    utils::showTickets(this->tickets);
+    int choice = utils::getInt(0, this->tickets.size(), "Enter number of ticket for details or 0 to exit: ");
     if (choice == 0) {
         return;
     }
-    BusRoute *bus = tickets[choice-1].get_bus();
+    BusRoute *bus = this->tickets[choice-1]->get_bus();
     while (true) {
         cout << "Details: " << endl;
         cout << "Origin: " << bus->origin << endl;
         cout << "Departure: " << bus->departure.format_dt() << endl;
         cout << "Destination: " << bus->destination << endl;
         cout << "Arrival: " << bus->arrival.format_dt() << endl;
-        cout << "Tickets booked: " << tickets[choice-1].quantity << endl;
+        cout << "Tickets booked: " << tickets[choice-1]->quantity << endl;
         cout << "Options: \n1. Cancel ticket(s)\n2. Back to tickets list\n3. Exit to menu\n";
         int option = utils::getInt(1, 3, "Choose option: ");
         switch(option) {
             case (1): {
-                tickets[choice-1].cancel();
+                tickets[choice-1]->cancel();
                 this->tickets.erase(this->tickets.begin() + choice - 1);
                 cout << "Cancelled tickets" << endl;
             } 
@@ -110,24 +93,27 @@ void User::check_booked_tickets() {
     }
 }
 
-void User::cancel_ticket() {
-    cout << "Cancel tickets";
-}
-
-string User::serialize() {
-    string s = "{\"login\": \"" + this->login + "\", \"salted_password\": \"" + this->salted_password + "\", \"name\": \n" + this->name + "\n}";
-    // todo: rewrite
-    return s;
-}
-
-User::User(string data) {
-    int start = data.find_first_of('{');
-    for (int i = start; i < data.size(); i++) {
-        int code = data[i];
-        
-    }
-}
-
 bool User::check_credentials(string login, string salted_password) {
     return (login == this->login && salted_password == this->salted_password);
 } 
+
+string User::serialize() {
+    JsonSerializer serializer = JsonSerializer();
+    serializer.serialize_string("login", this->login);
+    serializer.serialize_string("salted_password", this->salted_password);
+    serializer.serialize_string("name", this->name);
+    serializer.serialize_vector<Ticket>("tickets", this->tickets);
+    serializer.serialize_int("is_admin", 0);
+    cout << serializer.get_result();
+    return serializer.get_result();
+}
+
+User::User(string json) {
+    JsonDeserializer deserializer = JsonDeserializer(json);
+    this->login = deserializer.deserialize_string("login");
+    this->name = deserializer.deserialize_string("name");
+    this->salted_password = deserializer.deserialize_string("salted_password");
+
+
+    vector<Ticket*> temp = deserializer.deserialize_vector<Ticket>("tickets");
+}

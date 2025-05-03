@@ -69,7 +69,7 @@ void ConsoleApp::run() {
             user->main();
             exitFlag = true;
         } else {
-            cout << "Wrong login or password. Please try again";
+            cout << "Wrong login or password. Please try again" << endl;
         }
     }
 }

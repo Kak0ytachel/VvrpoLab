@@ -89,9 +89,9 @@ Datetime JsonDeserializer::deserialize_dt(string key) {
 }
 
 template<typename T>
-vector<T> JsonDeserializer::deserialize_vector(string key) {
+vector<T*> JsonDeserializer::deserialize_vector(string key) {
     string s = this->dict[key];
-    vector<T> values;
+    vector<T*> values;
     int start = s.find_first_of('[');
     int finish = s.find_last_of(']');
     int i = start;
@@ -123,7 +123,8 @@ vector<T> JsonDeserializer::deserialize_vector(string key) {
         }
         int b = i;
         string element = s.substr(a, b - a + 1);
-        T t = T(element);
+        T *t = new T(element);
+        values.push_back(t);
         i++;
         while (s[i] == ' ') {
             i++;

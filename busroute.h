@@ -17,7 +17,7 @@ public:
 
     BusRoute(string origin, string destination, Datetime departure, Datetime arrival, int tickets);
 
-    Ticket buy_ticket(int quantity);
+    Ticket* buy_ticket(int quantity);
 
     void cancel_ticket(Ticket *t);
 

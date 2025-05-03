@@ -9,11 +9,11 @@ using namespace std;
 class Ticket;
 
 class User {
+public:
     string login;
     string salted_password;
     string name;
-    vector<Ticket> tickets;
-public:
+    vector<Ticket*> tickets;
     User(string name, string login, string password);
 
     virtual void main() {
@@ -42,15 +42,11 @@ public:
 
     void see_tickets();
 
-    void buy_ticket();
-
     void check_booked_tickets();
-
-    void cancel_ticket();
 
     string serialize();
 
-    User(string data);
+    User(string json);
 
     virtual bool is_admin() {
         return false;
