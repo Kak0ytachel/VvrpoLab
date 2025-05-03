@@ -39,6 +39,7 @@ string BusRoute::serialize() {
     serializer.serialize_int("seatsTotal", this->seatsTotal);
     serializer.serialize_int("ticketsLeft", this->ticketsLeft);
     serializer.serialize_int("routeId", this->routeId);
+    serializer.serialize_double("price", this->price);
     return serializer.get_result();
 }
 
@@ -52,4 +53,5 @@ BusRoute::BusRoute(string json) {
     this->seatsTotal = deserializer.deserialize_int("seatsTotal");
     this->ticketsLeft = deserializer.deserialize_int("ticketsLeft");
     this->routeId = deserializer.deserialize_int("routeId");
+    this->price = deserializer.deserialize_double("price");
 }

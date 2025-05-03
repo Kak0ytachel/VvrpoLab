@@ -13,6 +13,8 @@ public:
 
     void serialize_dt(string key, Datetime value);
 
+    void serialize_double(string key, double value);
+
     string get_result();
 
     template <typename T>

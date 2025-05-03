@@ -14,6 +14,8 @@ namespace utils{
 
     Datetime getDate(string message);
 
+    double getDouble(string message, int precision);
+
     string encrypt(string pass);
 
     string centered(string s, int l);
@@ -21,4 +23,6 @@ namespace utils{
     void showBuses(vector<BusRoute*> buses);
 
     void showTickets(vector<Ticket*> tickets);
+
+    string from_double(double value, int precision);
 }

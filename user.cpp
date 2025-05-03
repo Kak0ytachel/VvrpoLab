@@ -17,8 +17,7 @@ User::User(string name, string login, string password) {
 
 
 void User::see_tickets() {
-    cout << "See tickets";
-    cout << endl;
+    cout << "Browsing bus routes..." << endl;
     vector<BusRoute*> buses = app->get_all_buses();
     utils::showBuses(buses);
     int choice = utils::getInt(0, buses.size(), "Enter number of ticket for details or 0 to exit: ");

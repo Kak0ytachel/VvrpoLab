@@ -19,6 +19,10 @@ void JsonSerializer::serialize_int(string key, int value) {
     this->serialize_string(key, to_string(value));
 }
 
+void JsonSerializer::serialize_double(string key, double value) {
+    this->serialize_string(key, to_string(value));
+}
+
 void JsonSerializer::serialize_dt(string key, Datetime value) {
     this->serialize_int(key, value.timestamp());
 }

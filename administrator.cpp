@@ -27,10 +27,10 @@ void Administrator::manage_users() {
         int is_admin = utils::getInt(0, 1, "Enter 1 if user is adminstrator, otherwise 0");
         if (is_admin) {
             Administrator *a = new Administrator(name, login, password);
-            app->users.push_back(a);
+            users.push_back(a);
         } else {
             User *u = new User(name, login, password);
-            app->users.push_back(u);
+            users.push_back(u);
         }
         cout << "Successfully created " << (is_admin? "administrator ": "user ") << name << endl;
         return this->manage_users();

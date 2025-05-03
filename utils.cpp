@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
+#include <iomanip>
+#include <sstream>
 #include "utils.h"
 #include "ticket.h"
 #include "busroute.h"
@@ -40,6 +43,15 @@ Datetime utils::getDate(string message) {
     return dt;
 }
 
+double utils::getDouble(string message, int precision) {
+    cout << message;
+    double value;
+    cin >> value;
+    double multiplier = pow(10.0, precision);
+    value = ceil(value * multiplier) / multiplier;
+    return value;
+}
+
 string utils::encrypt(string pass) {
     return pass;
 }
@@ -69,22 +81,28 @@ string utils::centered(string s, int l) {
 
 void utils::showBuses(vector<BusRoute*> buses) {
     cout << " No. |" << utils::centered("Origin", 12) << "|" << utils::centered("Departure", 12) << "|" << utils::centered("Destination", 12) << "|" << 
-        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << endl;
+        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << "|" << utils::centered("Price", 10) << endl;
     for (int i = 0; i < buses.size(); i++) {
         BusRoute *bus = buses[i];
         cout << utils::centered(to_string(i+1) + ".", 5) << "|" << utils::centered(bus->origin, 12) << "|" << utils::centered(bus->departure.format_t(), 12) 
             << "|" << utils::centered(bus->destination, 12) << "|" << utils::centered(bus->arrival.format_t(), 12) << "|" <<
-            utils::centered(to_string(bus->ticketsLeft), 10) << endl;
+            utils::centered(to_string(bus->ticketsLeft), 10) << "|" << utils::centered(utils::from_double(bus->price, 2), 10) << endl;
     }
 }
 
 void utils::showTickets(vector<Ticket*> tickets) {
     cout << " No. |" << utils::centered("Origin", 12) << "|" << utils::centered("Departure", 12) << "|" << utils::centered("Destination", 12) << "|" << 
-        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << endl;
+        utils::centered("Arrival", 12) << "|" << utils::centered("Tickets", 10) << "|" << utils::centered("Price", 10) << endl;
     for (int i = 0; i < tickets.size(); i++) {
         BusRoute *bus = tickets[i]->get_bus();
         cout << utils::centered(to_string(i+1) + ".", 5) << "|" << utils::centered(bus->origin, 12) << "|" << utils::centered(bus->departure.format_t(), 12) 
             << "|" << utils::centered(bus->destination, 12) << "|" << utils::centered(bus->arrival.format_t(), 12) << "|" <<
-            utils::centered(to_string(tickets[i]->quantity), 10) << endl;
+            utils::centered(to_string(tickets[i]->quantity), 10) << "|" << utils::centered(utils::from_double(bus->price, 2), 10) << endl;
     }
+}
+
+string utils::from_double(double value, int precision) {
+    ostringstream s;  
+    s << setprecision(precision) << value; 
+    return s.str(); 
 }

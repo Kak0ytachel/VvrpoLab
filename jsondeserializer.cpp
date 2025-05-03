@@ -101,6 +101,11 @@ Datetime JsonDeserializer::deserialize_dt(string key) {
     return dt;
 }
 
+double JsonDeserializer::deserialize_double(string key) {
+    double d = stod(deserialize_string(key));
+    return d;
+}
+
 vector<User*> JsonDeserializer::deserialize_user_vector(string key) {
     string s = this->dict[key];
     vector<User*> values;

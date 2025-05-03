@@ -14,6 +14,7 @@ public:
     int seatsTotal;
     int ticketsLeft;
     int routeId;
+    double price;
 
     BusRoute(string origin, string destination, Datetime departure, Datetime arrival, int tickets);
 
