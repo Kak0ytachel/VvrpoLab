@@ -44,6 +44,8 @@ public:
 
     void check_booked_tickets();
 
+    void buy_ticket(BusRoute *bus);
+
     string serialize();
 
     User(string json);

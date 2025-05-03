@@ -32,27 +32,12 @@ void User::see_tickets() {
         cout << "Destination: " << bus->destination << endl;
         cout << "Arrival: " << bus->arrival.format_dt() << endl;
         cout << "Tickets left: " << bus->ticketsLeft << endl;
+        cout << "Price per ticket: " << bus->price << endl;
         cout << "Options: \n1. Book ticket(s)\n2. Back to tickets list\n3. Exit to menu\n";
         int option = utils::getInt(1, 3, "Choose option: ");
         switch(option) {
             case (1): {
-                int quantity = utils::getInt(0, bus->ticketsLeft, "Enter quantity of tickets to book: ");
-                if (quantity == 0) {
-                    cout << "Cancelled booking" << endl;
-                }
-                Ticket *new_ticket = bus->buy_ticket(quantity);
-                for (int i = 0; i < this->tickets.size(); i++) {
-                    if (this->tickets[i]->routeId == new_ticket->routeId && this->tickets[i]->is_canceled == 0) {
-                        this->tickets[i]->quantity += new_ticket->quantity;
-                        delete new_ticket;
-                        new_ticket = nullptr;
-                        break;
-                    }
-                }
-                if (new_ticket != nullptr) {
-                    this->tickets.push_back(new_ticket);
-                }
-                cout << "Booked " << quantity << " tickets" << endl;
+                this->buy_ticket(bus);
                 break;
             } 
             case (2): {
@@ -64,7 +49,26 @@ void User::see_tickets() {
             }
         }
     }
+}
 
+void User::buy_ticket(BusRoute *bus) {
+    int quantity = utils::getInt(0, bus->ticketsLeft, "Enter quantity of tickets to book: ");
+    if (quantity == 0) {
+        cout << "Cancelled booking" << endl;
+    }
+    Ticket *new_ticket = bus->buy_ticket(quantity);
+    for (int i = 0; i < this->tickets.size(); i++) {
+        if (this->tickets[i]->routeId == new_ticket->routeId && this->tickets[i]->is_canceled == 0) {
+            this->tickets[i]->quantity += new_ticket->quantity;
+            delete new_ticket;
+            new_ticket = nullptr;
+            break;
+        }
+    }
+    if (new_ticket != nullptr) {
+        this->tickets.push_back(new_ticket);
+    }
+    cout << "Booked " << quantity << " tickets" << endl;
 }
 
 void User::check_booked_tickets() {

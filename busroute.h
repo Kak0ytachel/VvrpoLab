@@ -16,7 +16,7 @@ public:
     int routeId;
     double price;
 
-    BusRoute(string origin, string destination, Datetime departure, Datetime arrival, int tickets);
+    BusRoute(string origin, string destination, Datetime departure, Datetime arrival, int tickets, double price);
 
     Ticket* buy_ticket(int quantity);
 

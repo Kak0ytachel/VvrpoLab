@@ -4,8 +4,8 @@
 
 extern ConsoleApp *app;
 
-BusRoute::BusRoute(string origin, string destination, Datetime departure, Datetime arrival, int tickets): 
-    origin(origin), destination(destination), departure(departure), arrival(arrival), seatsTotal(tickets), ticketsLeft(tickets)  {
+BusRoute::BusRoute(string origin, string destination, Datetime departure, Datetime arrival, int tickets, double price): 
+    origin(origin), destination(destination), departure(departure), arrival(arrival), seatsTotal(tickets), ticketsLeft(tickets), price(price)  {
     
     this->routeId = app->create_unique_route_id();
     app->add_route(this);
