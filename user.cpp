@@ -122,7 +122,7 @@ string User::serialize() {
 }
 
 User::User(string json) {
-    cout << "Deeserializing User" << endl;
+    // cout << "Deeserializing User" << endl;
     JsonDeserializer deserializer = JsonDeserializer(json);
     this->login = deserializer.deserialize_string("login");
     this->name = deserializer.deserialize_string("name");

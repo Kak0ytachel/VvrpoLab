@@ -18,6 +18,9 @@ using namespace std;
 extern ConsoleApp *app;
 
 int main() {
+    cout << utils::encrypt("lol") << endl;
+    cout << utils::encrypt("admin") << endl;
+    cout << utils::encrypt("user") << endl;
     // Administrator *a = new Administrator("Name", "Login", "Passw0rd");
     // cout << "a" << a->serialize() << endl;
     // vector<User*> users;

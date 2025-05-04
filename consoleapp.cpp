@@ -9,12 +9,14 @@ ConsoleApp::ConsoleApp(string filename): filename(filename) {
         cout << "Unable to read data file" << endl;
         this->filename = "data.json";
         User *u = new User("Default", "user", "user");
+        User *u2 = new User("Idk", "lol", "pw");
         Administrator *a = new Administrator("Admin", "admin", "admin");
         this->users.push_back(u);
+        this->users.push_back(u2);
         this->users.push_back(a);
         return;
     }
-    cout << "Deserializing ConsoleApp" << endl;
+    // cout << "Deserializing ConsoleApp" << endl;
     JsonDeserializer deserializer = JsonDeserializer(json);
     this->users = deserializer.deserialize_user_vector("users");
     this->buses = deserializer.deserialize_vector<BusRoute>("buses");

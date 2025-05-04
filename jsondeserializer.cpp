@@ -5,17 +5,17 @@
 using namespace std;
 
 JsonDeserializer::JsonDeserializer(string input): input(input) {
-    cout << "New deserializer" << endl;
-    cout << "input string is " << input << endl;
+    // cout << "New deserializer" << endl;
+    // cout << "input string is " << input << endl;
     int start = input.find_first_of('{');
     int i = start;
     while (i < input.size() - 1) {
-        cout << "cycle 1, i = " << i << endl;
+        // cout << "cycle 1, i = " << i << endl;
         int a = input.find('"', i);
         int b = input.find('"', a + 1);
         string key = input.substr(a+1, b-a-1);
         string value;
-        cout << "key = " << key << endl;
+        // cout << "key = " << key << endl;
         // "bcde"
         // 012345
         // ^    ^
@@ -25,7 +25,7 @@ JsonDeserializer::JsonDeserializer(string input): input(input) {
         int d;
         int e;
         while (true) {
-            cout << "cycle 2, s[i] = " << input[i] << ", i=" << i << endl;
+            // cout << "cycle 2, s[i] = " << input[i] << ", i=" << i << endl;
             if (i == -1) {
                 return;
             }
@@ -65,7 +65,7 @@ JsonDeserializer::JsonDeserializer(string input): input(input) {
                 i++;
             }
         }
-        cout << "value = " << value << endl;
+        // cout << "value = " << value << endl;
         this->dict[key] = value;
         while (input[i] == ' ') {
             i++;
@@ -79,12 +79,10 @@ JsonDeserializer::JsonDeserializer(string input): input(input) {
         }
     }
 
-    cout << "Done deserializing" << endl;
-    for(auto const &ent : dict) {
-        cout << ent.first << ": " << ent.second << endl;
-    // ent.first is the second key
-    // ent.second is the data
-    }
+    // cout << "Done deserializing" << endl;
+    // for(auto const &ent : dict) {
+    //     cout << ent.first << ": " << ent.second << endl;
+    // }
 }
 
 string JsonDeserializer::deserialize_string(string key) {
@@ -113,7 +111,7 @@ vector<User*> JsonDeserializer::deserialize_user_vector(string key) {
     int finish = s.find_last_of(']');
     int i = start + 1;
     while (i < finish) {
-        cout << "des_u_v | i = " << i << ", s[i] = " << s[i] << endl; 
+        // cout << "des_u_v | i = " << i << ", s[i] = " << s[i] << endl; 
         while (s[i] == ' ') {
             i++;
         }
@@ -138,7 +136,7 @@ vector<User*> JsonDeserializer::deserialize_user_vector(string key) {
                 quotes = 1 - quotes;
             }
             if (square_braces == 0 && curly_bracets == 0 && quotes == 0) {
-                cout << "des_u_v breaking at i = " << i << ", s[i] = " << s[i] << endl;
+                // cout << "des_u_v breaking at i = " << i << ", s[i] = " << s[i] << endl;
                 break;
             }
             i++;
@@ -199,7 +197,7 @@ vector<T*> JsonDeserializer::deserialize_vector(string key) {
         }
         int b = i;
         string element = s.substr(a, b - a + 1);
-        cout << "Vector element json string: " << element << endl;
+        // cout << "Vector element json string: " << element << endl;
         T *t = new T(element);
         values.push_back(t);
         i++;

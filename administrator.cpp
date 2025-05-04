@@ -16,11 +16,11 @@ void Administrator::manage_users() {
         cout << utils::centered(to_string(i + 1) + ".", 5) << user->name << endl;
     }
     int choice = utils::getInt(0, users.size(), "Enter 0 to leave, user index 1 - " + to_string(users.size()) + 
-        ", or " + to_string(users.size()) + " to create new user: ");
+        ", or " + to_string(users.size()+1) + " to create new user: ");
     if (choice == 0) {
         return;
     }
-    if (choice == users.size()) {
+    if (choice == users.size() + 1) {
         cout << "Creating a new user" << endl;
         string name = utils::getString("Enter new user's name:");
         string login = utils::getString("Enter new user's login:");

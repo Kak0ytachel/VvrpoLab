@@ -25,7 +25,7 @@ string Ticket::serialize() {
 }
 
 Ticket::Ticket(string json) {
-    cout << "Deserializing Ticket" << endl;
+    // cout << "Deserializing Ticket" << endl;
     JsonDeserializer deserializer = JsonDeserializer(json);
     this->routeId = deserializer.deserialize_int("routeId");
     this->quantity = deserializer.deserialize_int("quantity");

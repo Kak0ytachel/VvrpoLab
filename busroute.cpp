@@ -44,7 +44,7 @@ string BusRoute::serialize() {
 }
 
 BusRoute::BusRoute(string json) {
-    cout << "Deserializing BusRoute" << endl;
+    // cout << "Deserializing BusRoute" << endl;
     JsonDeserializer deserializer = JsonDeserializer(json);
     this->origin = deserializer.deserialize_string("origin");
     this->destination = deserializer.deserialize_string("destination");
