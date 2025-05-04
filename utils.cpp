@@ -53,6 +53,30 @@ double utils::getDouble(string message, int precision) {
 }
 
 string utils::encrypt(string pass) {
+    for (int i = 0; i < pass.size(); i++) {
+        if (pass[i] >= '0' && pass[i] <= '9') {
+            pass[i] = 105 - pass[i];
+        } else {
+            if (i % 2 == 0 && pass[i] >= 'a' && pass[i] <= 'z' && pass[i] % 2 == 0) {
+                pass[i] = pass[i] - 32;
+            } else if (i % 2 == 1 && pass[i] >= 'A' && pass[i] <= 'Z' && pass[i] % 3 != 0) {
+                pass[i] = pass[i] + 32;
+            }
+            pass[i] = pass[i] + 3;
+            if (pass[i] == '\\') {
+                pass[i] = '^';
+            }
+            if (pass[i] == '"') {
+                pass[i] = 'a';
+            }
+            if (pass[i] == '{' || pass[i] == '}'  || pass[i] == ']'){
+                pass[i] = '&';
+            }
+            if (pass[i] == '[') {
+                pass[i] = '7';
+            }
+        }
+    }
     return pass;
 }
 

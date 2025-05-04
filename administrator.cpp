@@ -93,13 +93,12 @@ void Administrator::manage_buses() {
     cout << "Browsing bus routes..." << endl;
     vector<BusRoute*> buses = app->get_all_buses();
     utils::showBuses(buses);
-    int choice = utils::getInt(0, buses.size()+1, "Enter number of bus route for details, " + to_string(buses.size() + 1) + "to create a new one or 0 to exit: ");
+    int choice = utils::getInt(0, buses.size()+1, "Enter number of bus route for details, " + to_string(buses.size() + 1) 
+        + " to create a new one or 0 to exit: ");
     if (choice == 0) {
         return;
     }
     if (choice == buses.size() + 1) {
-        // TODO: create a new route
-
         string origin = utils::getString("Enter origin: ");
         Datetime departure = utils::getDate("Enter departure time: ");
         string destination = utils::getString("Enter destination: ");
@@ -107,7 +106,6 @@ void Administrator::manage_buses() {
         int tickets = utils::getInt(0, 9999, "Enter tickets quanity: ");
         double price = utils::getDouble("Enter ticket price: ", 2);
         BusRoute *new_route = new BusRoute(origin, destination, departure, arrival, tickets, price);
-        app->add_route(new_route);
         cout << "Successfully created a new bus route" << endl;
         return this->manage_buses();
     }
@@ -121,7 +119,7 @@ void Administrator::manage_buses() {
         cout << "Tickets left: " << bus->ticketsLeft << endl;
         cout << "Price per ticket: " << bus->price << endl;
         cout << "Options: \n1. Book ticket(s)\n2. Edit bus route\n3. Back to tickets list\n4. Exit to menu\n";
-        int option = utils::getInt(1, 3, "Choose option: ");
+        int option = utils::getInt(1, 4, "Choose option: ");
         switch(option) {
             case 1: {
                 this->buy_ticket(bus);
@@ -182,7 +180,7 @@ void Administrator::manage_buses() {
                 break;
             }
             case 3: {
-                this->see_tickets();
+                this->manage_buses();
                 return;
             }
             case 4: {

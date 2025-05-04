@@ -16,10 +16,10 @@ public:
         bool exitFlag = false;
         while (!exitFlag) {
             cout << "Menu: \n1. Browse bus routes\n2. View booked tickets\n3. Manage users\n4. Log out" << endl;
-            int e = utils::getInt(1, 3, "Choose menu option: ");
+            int e = utils::getInt(1, 4, "Choose menu option: ");
             switch (e) {
                 case 1: {
-                    this->see_tickets();
+                    this->manage_buses();
                     break;
                 }
                 case 2: {
@@ -42,6 +42,6 @@ public:
     virtual bool is_admin() {
         return true;
     }
-    
+
     Administrator(string json);
 };

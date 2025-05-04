@@ -27,6 +27,7 @@ int main() {
     // User *u = new User("Idk", "lol", "pw");
     // cout << u->serialize();
     // cout << "end" << endl;
+    cout << utils::encrypt("admin");
     app = new ConsoleApp("data.json");
     // int po = utils::getInt(0, 5, "Idk: ");
     // JsonSerializer serializer = JsonSerializer();
