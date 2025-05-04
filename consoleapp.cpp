@@ -50,8 +50,6 @@ string ConsoleApp::get_data() {
     if (fin.is_open()) {
         string line;
         getline(fin, line);
-        // TODO
-
         return line;
     } else {
         return "";
@@ -63,8 +61,8 @@ void ConsoleApp::save_data() {
     ofstream fout;
     fout.open(this->filename);
     string json = this->serialize();
-    cout << endl << "result" << endl;
-    cout << json;
+    // cout << endl << "result" << endl;
+    // cout << json;
     fout << json;
     fout.close();
     

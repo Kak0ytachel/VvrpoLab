@@ -18,9 +18,9 @@ using namespace std;
 extern ConsoleApp *app;
 
 int main() {
-    cout << utils::encrypt("lol") << endl;
-    cout << utils::encrypt("admin") << endl;
-    cout << utils::encrypt("user") << endl;
+    // cout << utils::encrypt("lol") << endl;
+    // cout << utils::encrypt("admin") << endl;
+    // cout << utils::encrypt("user") << endl;
     // Administrator *a = new Administrator("Name", "Login", "Passw0rd");
     // cout << "a" << a->serialize() << endl;
     // vector<User*> users;
@@ -30,7 +30,7 @@ int main() {
     // User *u = new User("Idk", "lol", "pw");
     // cout << u->serialize();
     // cout << "end" << endl;
-    cout << utils::encrypt("admin");
+    // cout << utils::encrypt("admin");
     app = new ConsoleApp("data.json");
     // int po = utils::getInt(0, 5, "Idk: ");
     // JsonSerializer serializer = JsonSerializer();
