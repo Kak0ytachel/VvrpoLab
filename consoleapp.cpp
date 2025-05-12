@@ -40,10 +40,6 @@ vector<BusRoute*> ConsoleApp::get_all_buses() {
     return this->buses;
 }
 
-void ConsoleApp::load_file() {
-    
-}
-
 string ConsoleApp::get_data() {
     ifstream fin;
     fin.open(this->filename);

@@ -23,8 +23,6 @@ public:
     
     vector<BusRoute*> get_all_buses();
 
-    void load_file();
-
     string get_data();
 
     void save_data();

@@ -9,7 +9,6 @@
 extern ConsoleApp *app;
 
 User::User(string name, string login, string password) {
-// TODO encrypt password
     this->login = login;
     this->name = name;
     this->salted_password = utils::encrypt(password);
@@ -18,6 +17,7 @@ User::User(string name, string login, string password) {
 
 void User::see_tickets() {
     cout << "Browsing bus routes..." << endl;
+    // TODO: (questionable) add search & sorting
     vector<BusRoute*> buses = app->get_all_buses();
     utils::showBuses(buses);
     int choice = utils::getInt(0, buses.size(), "Enter number of ticket for details or 0 to exit: ");
