@@ -14,9 +14,10 @@ public:
     string salted_password;
     string name;
     vector<Ticket*> tickets;
-    User(string name, string login, string password);
 
-    virtual void main() {
+    User(string name, string login, string password); // стандартная инициализация
+
+    virtual void main() { // главное меню администратора
         cout << "Logged in as user " << this->name << endl;
         bool exitFlag = false;
         while (!exitFlag) {
@@ -40,19 +41,19 @@ public:
         }
     }
 
-    void see_tickets();
+    void see_tickets(); // просмотреть билеты
 
-    void check_booked_tickets();
+    void check_booked_tickets(); // просмотреть заказанные билеты
 
-    void buy_ticket(BusRoute *bus);
+    void buy_ticket(BusRoute *bus); // заказать билет
 
-    string serialize();
+    string serialize(); // сериализовация
 
-    User(string json);
+    User(string json); // инициализация при дересериализации
 
-    virtual bool is_admin() {
+    virtual bool is_admin() { // проверка на класс администратора
         return false;
     }
 
-    bool check_credentials(string login, string salted_password);
+    bool check_credentials(string login, string salted_password); // проверка логина и пароля
 };

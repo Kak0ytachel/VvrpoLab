@@ -10,13 +10,13 @@ public:
     int quantity;
     int is_canceled = 0;
 
-    Ticket(int routeId, int quantity);
+    Ticket(int routeId, int quantity); // стандартная инициализация
 
-    void cancel();
+    void cancel(); // отмена билета
 
-    BusRoute* get_bus();
+    BusRoute* get_bus(); // получение маршрута по билету
 
-    string serialize();
+    string serialize(); // сериализация
 
-    Ticket(string json);
+    Ticket(string json); // инициализация при дересериализации
 };

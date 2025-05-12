@@ -3,30 +3,23 @@
 
 class Datetime{
 public:
-    // std::string name;
     int hour;
     int minute;
     int day;
     int month;
     int year;
 
-    // Datetime(std::string name);
+    Datetime(int d, int mo, int y, int h, int mi);  // стандартная инициализация
 
-    Datetime(int a, int b);
+    Datetime(int ts); // инициализация при дересериализации
 
-    Datetime(int d, int mo, int y, int h, int mi);
+    Datetime(); // инициализация без аргументов
 
-    Datetime(int ts);
+    int timestamp(); // преобразование в UTC timestamp
 
-    Datetime();
+    bool is_leap_year(); // является ли год високосным
 
-    // void main();
-
-    int timestamp();
-
-    bool is_leap_year();
-
-    static bool is_leap_year(int year) {
+    static bool is_leap_year(int year) { // является ли год високосным (статическая)
         if (year % 400 == 0) {
             return true;
         }
@@ -39,11 +32,9 @@ public:
         return false;
     }
 
-    std::string format_dt();
+    std::string format_dt(); // форматирование даты и времени
 
-    std::string format_d();
+    std::string format_d(); // форматирование даты и времени
 
-    std::string format_t();
+    std::string format_t(); // форматирование даты и времени
 };
-
-std::ostream& operator << (std::ostream &os, const Datetime &dt);

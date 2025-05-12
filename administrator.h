@@ -5,13 +5,13 @@
 
 class Administrator: public User {
 public: 
-    Administrator(string name, string login, string password);
+    Administrator(string name, string login, string password); // стандартная инициализация
 
-    void manage_users();
+    void manage_users(); // управление пользователями
 
-    void manage_buses();
+    void manage_buses(); // управление автобусными маршрутами
 
-    virtual void main() {
+    virtual void main() { // главное меню администратора
         cout << "Logged in as administrator " << this->name << endl;
         bool exitFlag = false;
         while (!exitFlag) {
@@ -39,9 +39,9 @@ public:
         }
     }
 
-    virtual bool is_admin() {
+    virtual bool is_admin() { // проверка на класс администратора
         return true;
     }
 
-    Administrator(string json);
+    Administrator(string json); // инициализация при дересериализации
 };

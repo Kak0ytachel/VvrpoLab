@@ -12,18 +12,18 @@ public:
     string input;
     map<string, string> dict;
 
-    JsonDeserializer(string input);
+    JsonDeserializer(string input); // конструктор
 
-    string deserialize_string(string key);
+    string deserialize_string(string key); // десерелизация строки
 
-    int deserialize_int(string key);
+    int deserialize_int(string key); // десерелизация целого числа
 
-    Datetime deserialize_dt(string key);
+    Datetime deserialize_dt(string key); // десерелизация Datetime
 
-    double deserialize_double(string key);
+    double deserialize_double(string key); // десерелизация вещественного числа
 
     template<typename T>
-    vector<T*> deserialize_vector(string key);
+    vector<T*> deserialize_vector(string key); // десерелизация вектора
 
-    vector<User*> deserialize_user_vector(string key);
+    vector<User*> deserialize_user_vector(string key); // десерелизация вектора пользователей или админов
 };

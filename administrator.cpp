@@ -8,7 +8,7 @@ Administrator::Administrator(string name, string login, string password): User(n
 
 extern ConsoleApp *app;
 
-void Administrator::manage_users() {
+void Administrator::manage_users() { 
     vector<User*> &users = app->users;
     // TODO: (questionable) user table
     for (int i = 0; i < users.size(); i++) {

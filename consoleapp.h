@@ -15,25 +15,25 @@ class ConsoleApp {
     int next_route_id = 1001;
     string filename;
 public:    
-    
     vector<User*> users;
-    ConsoleApp(string filename);
 
-    BusRoute* get_bus(int route_id);
+    ConsoleApp(string filename); //  инициализация
+
+    BusRoute* get_bus(int route_id); // возвращает автобусный маршрут по номеру
     
-    vector<BusRoute*> get_all_buses();
+    vector<BusRoute*> get_all_buses(); // возвращает все автобусы
 
-    string get_data();
+    string get_data(); // получает данные из файла
 
-    void save_data();
+    void save_data(); // сохраняет данные в файл
 
-    void run();
+    void run(); // основной цикл программы
 
-    int create_unique_route_id();
+    int create_unique_route_id(); // создает новый уникальный номер маршрута
 
-    void add_route(BusRoute *bus);
+    void add_route(BusRoute *bus); // добавляет маршрут в словарь
 
-    string serialize();
+    string serialize(); // сереализация
 };
 
 ConsoleApp *app = nullptr;
