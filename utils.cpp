@@ -130,3 +130,8 @@ string utils::from_double(double value, int precision) {
     s << setprecision(precision) << value; 
     return s.str(); 
 }
+
+string utils::to_lower(string s) {
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+    return s;
+}

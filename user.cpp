@@ -18,9 +18,95 @@ User::User(string name, string login, string password) {
 void User::see_tickets() {
     cout << "Browsing bus routes..." << endl;
     // TODO: (questionable) add search & sorting
+    bool isSortingDone = false;
     vector<BusRoute*> buses = app->get_all_buses();
-    utils::showBuses(buses);
-    int choice = utils::getInt(0, buses.size(), "Enter number of ticket for details or 0 to exit: ");
+    while (!isSortingDone){
+        utils::showBuses(buses);
+        int opt = utils::getInt(1, 4, "Options: \n1. View route\n2. Apply filter\n3. Sort routes\n4. Exit\n");
+        switch (opt) {
+            case 1: {
+                isSortingDone = true;
+                break;
+
+            }
+            case 2: {
+                int field = utils::getInt(1, 4, "Choose field to filter: \n1. Origin\n2. Destination\n3. Price\n4. Reset filters\n");
+                switch (field) {
+                    case 1: {
+                        string target = utils::getString("Enter origin to look for");
+                        vector<BusRoute*> temp;
+                        for (BusRoute *bus: buses) {
+                            string s1 = utils::to_lower(bus->origin);
+                            string s2 = utils::to_lower(target);
+                            if (s1.find(s2) != string::npos || s2.find(s1) != string::npos) {
+                                temp.push_back(bus);
+                            }
+                        }
+                        if (temp.size() == 0) {
+                            cout << "No routes found, revoking filter" << endl;
+                        } else {
+                            buses.clear();
+                            buses.assign(temp.begin(), temp.end());
+                            cout << "Successfully applied filter" << endl;
+                        }
+                        break;
+                    }
+                    case 2: {
+                        string target = utils::getString("Enter destination to look for");
+                        vector<BusRoute*> temp;
+                        for (BusRoute *bus: buses) {
+                            string s1 = utils::to_lower(bus->destination);
+                            string s2 = utils::to_lower(target);
+                            if (s1.find(s2) != string::npos || s2.find(s1) != string::npos) {
+                                temp.push_back(bus);
+                            }
+                        }
+                        if (temp.size() == 0) {
+                            cout << "No routes found, revoking filter" << endl;
+                        } else {
+                            buses.clear();
+                            buses.assign(temp.begin(), temp.end());
+                            cout << "Successfully applied filter" << endl;
+                        }
+                        break;
+                    }
+                    case 3: {
+                        double minPrice = utils::getDouble("Enter minimal price", 2);
+                        double maxPrice = utils::getDouble("Enter maximal price", 2);
+                        vector<BusRoute*> temp;
+                        for (BusRoute *bus: buses) {
+                            if (bus->price >= minPrice && bus->price <= maxPrice) {
+                                temp.push_back(bus);
+                            }
+                        }
+                        if (temp.size() == 0) {
+                            cout << "No routes found, revoking filter" << endl;
+                        } else {
+                            buses.clear();
+                            buses.assign(temp.begin(), temp.end());
+                            cout << "Successfully applied filter" << endl;
+                        }
+                        break;
+                    }
+                    case 4: {
+                        buses = app->get_all_buses();
+                        cout << "Successfully removed filters" <<endl;
+                        break;
+                    }
+                }
+                break;
+            }
+            case 3: {
+
+                break;
+            }
+
+            case 4: {
+                return;
+            }
+        }
+    }
+    int choice = utils::getInt(0, buses.size(), "Enter number of route for details or 0 to exit: ");
     if (choice == 0) {
         return;
     }

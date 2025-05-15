@@ -1,4 +1,5 @@
 #include <string>
+#include <algorithm>
 #include "datetime.h"
 using namespace std;
 
@@ -25,4 +26,6 @@ namespace utils{
     void showTickets(vector<Ticket*> tickets); // вывод таблицы билетов
 
     string from_double(double value, int precision); // пробразование из вещественного числа в строку с заданной точностью
+
+    string to_lower(string s); // преобразует строку к нижнему регистру
 }
