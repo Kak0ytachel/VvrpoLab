@@ -17,7 +17,7 @@ public:
 
     User(string name, string login, string password); // стандартная инициализация
 
-    virtual void main() { // главное меню администратора
+    virtual void main() { // главное меню пользователя
         cout << "Logged in as user " << this->name << endl;
         bool exitFlag = false;
         while (!exitFlag) {

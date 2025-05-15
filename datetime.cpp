@@ -52,7 +52,9 @@ int Datetime::timestamp() {
         }
     }
     for (int m = 1; m < this->month; m++) {
-        if (m == 1 || m == 3 || m == 5 || m == 7 || m || m == 8 || m == 10 || m == 12) {
+        if (m == 2) {
+            result += ((this->is_leap_year())? 29 : 28) * 24 * 60 * 60;
+        } else if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
             result += 31 * 24 * 60 * 60;
         } else {
             result += 30 * 24 * 60 * 60;
@@ -66,7 +68,7 @@ int Datetime::timestamp() {
 
 bool Datetime::is_leap_year() {
     return this->is_leap_year(this->year);
-} 
+}
 
 string Datetime::format_dt() {
     return this->format_t() + " " + this->format_d();
