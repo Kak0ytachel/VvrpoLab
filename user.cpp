@@ -71,8 +71,8 @@ void User::see_tickets() {
                         break;
                     }
                     case 3: {
-                        double minPrice = utils::getDouble("Enter minimal price", 2);
-                        double maxPrice = utils::getDouble("Enter maximal price", 2);
+                        double minPrice = utils::getDouble("Enter minimal price: ", 2);
+                        double maxPrice = utils::getDouble("Enter maximal price: ", 2);
                         vector<BusRoute*> temp;
                         for (BusRoute *bus: buses) {
                             if (bus->price >= minPrice && bus->price <= maxPrice) {
