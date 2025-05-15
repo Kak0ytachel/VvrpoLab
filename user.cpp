@@ -1,4 +1,5 @@
 #include <iomanip>
+#include <functional>
 #include "user.h"
 #include "utils.h"
 #include "consoleapp.h"
@@ -97,7 +98,23 @@ void User::see_tickets() {
                 break;
             }
             case 3: {
-
+                int sortingOption = utils::getInt(1, 3, "Choose field to sort by:\n1. Origin\n2. Departure\n3. Price");
+                function<bool(BusRoute*, BusRoute*)> cmp;
+                cmp = [](BusRoute *a, BusRoute *b) {return true;};
+                switch (sortingOption) {
+                    case 1: {
+                        cmp = [](BusRoute *a, BusRoute *b) {return ((a->origin) < (b->origin));};
+                        break;
+                    }
+                    case 2: {
+                        cmp = [](BusRoute *a, BusRoute *b) {return ((a->departure.timestamp()) < (b->departure.timestamp()));};
+                        break;
+                    }
+                    case 3: {
+                        cmp = [](BusRoute *a, BusRoute *b) {return ((a->price) < (b->price));};
+                    }
+                }
+                sort(buses.begin(), buses.end(), cmp);
                 break;
             }
 
